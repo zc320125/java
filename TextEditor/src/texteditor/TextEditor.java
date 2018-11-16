@@ -184,23 +184,37 @@ public class TextEditor extends JFrame{
          String filename = this.filename;
          File file = new File(dirpath, filename);
          try{
-            Pattern pa = Pattern.compile("\\d+");
+            Pattern pa = Pattern.compile("java:\\d+");
             Runtime r = Runtime.getRuntime();
             Process p = r.exec("javac "+file);
             t1.setText("");
             BufferedReader br1 = new BufferedReader(new InputStreamReader(p.getErrorStream(),Charset.forName("GBK")));
             String line = null;
             ArrayList<String> arr = new ArrayList<String>();
+            ArrayList<String> arr2 = new ArrayList<String>();
             while ((line = br1.readLine()) != null) {
                 t1.append(line + "\r\n");
                 Matcher m = pa.matcher(line);
                 while(m.find()){
-                    arr.add(m.group());
+                    arr.add(m.group());;
                 }
             }
+            String line2 = arr.toString();
+            Pattern pa2 = Pattern.compile("\\d+");
+            Matcher m2 = pa2.matcher(line2);
+            while(m2.find()){
+                arr2.add(m2.group());;
+            }
+            for (int i = 0; i < arr2.size() - 1; i++) {
+                for (int j = i + 1; j < arr2.size(); j++) {
+                    if (arr2.get(i).equals(arr2.get(j))) {
+                        arr2.remove(j);
+                    }
+                }
+            }
+            System.out.println(arr2);
             t.addKeyListener(new KeyListener() {
                 int i=0;
-             
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -210,12 +224,12 @@ public class TextEditor extends JFrame{
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_F4){
-                    int j = Integer.parseInt(arr.get(i));
+                    int j = Integer.parseInt(arr2.get(i));
                     try {
                         int k = t.getLineStartOffset(j);
                          t.setCaretPosition(k);
                          i++;
-                         if(i==arr.size()-1){
+                         if(i==arr2.size()){
                              i=0;
                          }
                     } catch (BadLocationException ex) {
