@@ -36,7 +36,7 @@ public class Parse {
             while  ((line = br2.readLine()) != null) {
                 String[] words = line.split("[ \\.\\?\\,\\!\\:\\\"\\;\\(\\)\\_]+");
                 for (String w : words) {
-                    //System.out.print(w+" ");
+                    System.out.print(w+" ");
                     arr2.add(w);
                 }
                 System.out.println();
@@ -90,7 +90,7 @@ public class Parse {
             }    
         }catch(Exception e){
             System.out.println("Sorry, can't do it!");
-            e.printStackTrace();    
+            e.printStackTrace();
         }   
     }
 }
